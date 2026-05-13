@@ -1,0 +1,8 @@
+venv/
+.venv/
+data
+misc.xml
+workspace.xml
+.idea/
+.log
+*.iml
