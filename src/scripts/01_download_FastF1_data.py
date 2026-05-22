@@ -1,12 +1,16 @@
-import os
 import fastf1
-import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
-fastf1.Cache.enable_cache('../data/cacheF1/') # session data can be quite large (50-100MB) so caching is recommended by FastF1
+# Use pathlib for cache directory
+project_root = Path(__file__).resolve().parent.parent
+cache_dir = project_root / 'data' / 'cacheF1'
+cache_dir.mkdir(parents=True, exist_ok=True)
 
-# Whatever year is needed to be downloaded
-year = 2022
+fastf1.Cache.enable_cache(str(cache_dir))  # Must convert to string for FastF1
+
+# Whatever year to download
+year = 2025
 sessions_to_load = ['R']
 
 
@@ -16,30 +20,34 @@ def load_and_save_all_sessions(year, race_num):
     for session_type in sessions_to_load:
         try:
             session = fastf1.get_session(year, race_num, session_type)
-            session.load()
+            session.load(weather=True)
 
-            # Creating path
+            # Get race name
             race_name = session.event['EventName'].replace(' ', '_')
-            output_dir = f"../data/raw/{session.event['EventName']}/{year}"
-            os.makedirs(output_dir, exist_ok=True)
 
-            output_path = os.path.join(
-                output_dir,
-                f"{race_num:02d}_{race_name}_{session_type}_laps.csv"
-            )
+            # Build output directory with pathlib for compatibility with both Mac and Windows
+            output_dir = project_root / 'data' / 'raw' / str(year) / race_name
 
-            # Saving laps, what is contained in laps can be found here (https://theoehrly-fast-f1.mintlify.app/core-concepts/lap-timing#available-lap-data)
+            # Create directory
+            output_dir.mkdir(parents=True, exist_ok=True)
+
+            # Build output file paths
+            output_path = output_dir / f"{race_num:02d}_{race_name}_{session_type}_laps.csv"
+            output_path_weather = output_dir / f"{race_num:02d}_{race_name}_{session_type}_weather.csv"
+
+            # Save laps and weather from each race
             session.laps.to_csv(output_path, index=False)
+            session.weather_data.to_csv(output_path_weather, index=False)
 
             print(f"Saved: {race_name} - {session_type}")
 
         except Exception as e:
-            print(f"Failed {race_num} {session_type}: {e}")
+            print(f"Failed: {race_num} {session_type}: {e}")
 
 
-# Then use it
+# Download races
 with ThreadPoolExecutor(max_workers=3) as executor:
     list(executor.map(
         lambda race_num: load_and_save_all_sessions(year, race_num),
-        range(1, 23)
+        range(1, 25)  # 2025 will have 24 races
     ))
