@@ -2,14 +2,14 @@
 # without having to go into the training and evaluation notebooks.
 
 model:
-  input_dim: 14 # do not change, this value is the number of features
-  hidden_dim_1: 512
-  hidden_dim_2: 256
-  dropout_rate: 0.5
+  input_dim: 8 # do not change, this value is the number of features
+  hidden_dim_1: 1024
+  hidden_dim_2: 512
+  dropout_rate: 0.3
 
 training:
-  epochs: 250
-  batch_size: 32
+  epochs: 300
+  batch_size: 64 # with smaller batch sizes the model see pit laps more frequently
   learning_rate: 0.0001
 
 mc_dropout:
@@ -18,7 +18,7 @@ mc_dropout:
 paths:
   processed_dir: src/data/processed
   models_dir: src/models
-  model_filename: pit_strategy_net_4.pth
-  config_name: config_4.yaml
-  folder_name: test4
-  results_name: results4.txt
+  model_filename: pit_strategy_net_2.pth
+  config_name: config_2.yaml
+  folder_name: test2
+  results_name: results2.txt

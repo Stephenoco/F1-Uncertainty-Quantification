@@ -5,7 +5,7 @@
 from json import load
 
 filename = '../notebooks/03_training.ipynb'
-with open(filename) as fp:
+with open(filename, encoding='utf-8') as fp:
     nb = load(fp)
 
 for cell in nb['cells']:
@@ -15,7 +15,7 @@ for cell in nb['cells']:
 
 
 filename = '../notebooks/04_evaluation.ipynb'
-with open(filename) as fp:
+with open(filename, encoding='utf-8') as fp:
     nb = load(fp)
 
 for cell in nb['cells']:
