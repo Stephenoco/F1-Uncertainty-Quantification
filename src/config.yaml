@@ -6,15 +6,15 @@ model:
   hidden_dim: 128 # if using GRU or LSTM models
   hidden_dim_1: 128
   hidden_dim_2: 64
-  dropout_rate: 0.2
+  dropout_rate: 0.35
   num_classes: 3
   sequence_length: 3 # if using attention
   num_layers: 4 # if using attention
 
 training:
-  epochs: 1000
+  epochs: 500
   batch_size: 2
-  learning_rate: 0.001
+  learning_rate: 0.0001
 
 mc_dropout:
   n_passes: 100 # should not be changed
@@ -22,7 +22,7 @@ mc_dropout:
 paths:
   processed_dir: src/data/processed
   models_dir: src/models
-  model_filename: pit_strategy_Net_16.pth
-  config_name: config_16.yaml
-  folder_name: test_Net_16
-  architecture: PitStrategyNet
+  model_filename: pit_strategy_Net_22.pth
+  config_name: config_22.yaml
+  folder_name: test_Net_22
+  architecture: PitStrategyNetWithVal

@@ -22,3 +22,12 @@ for cell in nb['cells']:
     if cell['cell_type'] == 'code':
         source = ''.join(line for line in cell['source'] if not line.startswith('%'))
         exec(source, globals(), locals())
+
+filename = '../notebooks/06_Visualisations.ipynb'
+with open(filename, encoding='utf-8') as fp:
+    nb = load(fp)
+
+for cell in nb['cells']:
+    if cell['cell_type'] == 'code':
+        source = ''.join(line for line in cell['source'] if not line.startswith('%'))
+        exec(source, globals(), locals())
