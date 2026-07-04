@@ -35,24 +35,6 @@ class PitStrategyLSTM(nn.Module):
         out = self.dropout(out[:, -1, :])  # take last timestep only
         return self.fc(out)
 
-class PitStrategyGRU(nn.Module):
-    def __init__(self, input_dim, hidden_dim=64, num_layers=2, dropout_rate=0.3):
-        super().__init__()
-        self.gru = nn.GRU(
-            input_size  = input_dim,
-            hidden_size = hidden_dim,
-            num_layers  = num_layers,
-            batch_first = True,
-            dropout     = dropout_rate if num_layers > 1 else 0.0
-        )
-        self.dropout = nn.Dropout(dropout_rate)
-        self.fc      = nn.Linear(hidden_dim, 1)
-
-    def forward(self, x):
-        out, _ = self.gru(x)
-        out    = self.dropout(out[:, -1, :])
-        return self.fc(out)
-
 class PitStrategyGRUAttention(nn.Module):
     def __init__(self, input_dim, hidden_dim=64, num_layers=2, dropout_rate=0.3, num_classes=3):
         super().__init__()
@@ -73,21 +55,3 @@ class PitStrategyGRUAttention(nn.Module):
         context = (attn_weights * out).sum(dim=1)
         context = self.dropout(context)
         return self.fc(context)
-
-class CompoundGRU(nn.Module):
-    def __init__(self, input_dim, hidden_dim=64, num_layers=2, dropout_rate=0.3):
-        super().__init__()
-        self.gru = nn.GRU(
-            input_size  = input_dim,
-            hidden_size = hidden_dim,
-            num_layers  = num_layers,
-            batch_first = True,
-            dropout     = dropout_rate if num_layers > 1 else 0.0
-        )
-        self.dropout = nn.Dropout(dropout_rate)
-        self.fc      = nn.Linear(hidden_dim, 3)  # 3 classes: SOFT/MEDIUM/HARD
-
-    def forward(self, x):
-        out, _ = self.gru(x)
-        out    = self.dropout(out[:, -1, :])
-        return self.fc(out)  # no sigmoid — use CrossEntropyLoss
