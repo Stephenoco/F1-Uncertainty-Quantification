@@ -2,11 +2,11 @@
 # without having to go into the training and evaluation notebooks.
 
 model:
-  input_dim: 27 # do not change, this value is the number of features
-  hidden_dim: 256 # if using GRU or LSTM models
+  input_dim: 37 # do not change, this value is the number of features
+  hidden_dim: 32 # if using GRU or LSTM models
   hidden_dim_1: 128 # for regular feed forward neural nets
   hidden_dim_2: 64
-  dropout_rate: 0.4
+  dropout_rate: 0.1
   num_classes: 3
   sequence_length: 3 # if using attention
   num_layers: 2 # if using attention
@@ -14,7 +14,7 @@ model:
 training:
   epochs: 500
   batch_size: 32
-  learning_rate: 0.00025
+  learning_rate: 0.0001
 
 mc_dropout:
   n_passes: 100 # should not be changed
@@ -22,7 +22,7 @@ mc_dropout:
 paths:
   processed_dir: src/data/processed
   models_dir: src/models
-  model_filename: pit_strategy_gru_6.pth
-  config_name: config_6.yaml
-  folder_name: test_LSTM_6
-  architecture: PitStrategyLSTM
+  model_filename: pit_strategy_Net_8.pth
+  config_name: config_8.yaml
+  folder_name: test_NetSMOTE_8
+  architecture: PitStrategyNet
